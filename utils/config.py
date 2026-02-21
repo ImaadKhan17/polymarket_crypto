@@ -1,3 +1,5 @@
 DB_PATH = "data/database.db"
 LEADERBOARD_URL = "https://data-api.polymarket.com/v1/leaderboard"
+BINANCE_URL = "https://api.binance.us/api/v3/klines"
 ACTIVITY_URL = "https://data-api.polymarket.com/activity"
+CLOSED_POSITIONS_URL = "https://data-api.polymarket.com/closed-positions"

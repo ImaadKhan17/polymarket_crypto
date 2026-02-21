@@ -1,7 +1,7 @@
 import sys
 sys.path.append('.')
 import requests
-from utils.db import insert_trade, get_wallets
+from utils.db import insert_trade
 from utils.config import ACTIVITY_URL
 
 
