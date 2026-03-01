@@ -17,4 +17,3 @@ def get_win_rates():
     
     return results
 
-print(get_win_rates())

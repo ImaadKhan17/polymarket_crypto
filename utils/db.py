@@ -65,6 +65,19 @@ def insert_price(price_data):
     con.commit()
     con.close()
 
+def get_price(symbol, timestamp):
+    con = sql3.connect(DB_PATH)
+    cur = con.cursor()
+    
+    cur.execute("SELECT * FROM prices WHERE symbol=? AND timestamp<=? ORDER BY timestamp DESC LIMIT 1", (symbol, timestamp))
+
+    data = cur.fetchall()
+    con.close()
+    return data
+
+
+
+
 def get_wallets():
     con = sql3.connect(DB_PATH)
     cur = con.cursor()

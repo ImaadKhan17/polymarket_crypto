@@ -9,13 +9,18 @@ def fetch_activity(wallet):
     activity = []
     offset = 0
     while True:
-        r = requests.get(f"{ACTIVITY_URL}?user={wallet}&type=TRADE&sortDirection=ASC&offset={offset}&limit=500")
+        r = requests.get(
+            f"{ACTIVITY_URL}?user={wallet}&type=TRADE&sortDirection=DESC&offset={offset}&limit=500"
+        )
         if r.status_code != 200:
-            print(f"Error: {r.status_code}")
+            print(f"[{wallet[:8]}] status {r.status_code} at offset {offset}: {r.text[:200]}")
             break
         results = r.json()
         activity += results
         if len(results)<500:
+            break
+
+        if offset >= 3000:  
             break
       
         offset+=500

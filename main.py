@@ -14,4 +14,4 @@ wallets = get_wallets()
 for wallet in wallets[3:]: 
     
     fetch_closed_positions(wallet)
-    # fetch_activity(wallet)
+    fetch_activity(wallet)
