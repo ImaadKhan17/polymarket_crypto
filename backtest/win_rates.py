@@ -3,6 +3,8 @@ sys.path.append('.')
 import sqlite3 as sql3
 from utils.config import DB_PATH
 
+#add weighted win rates
+
 def get_win_rates():
     con = sql3.connect(DB_PATH)
     con.row_factory = sql3.Row

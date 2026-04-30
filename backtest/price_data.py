@@ -5,6 +5,8 @@ import sqlite3
 from utils.config import DB_PATH, BINANCE_URL
 import time
 from utils.db import insert_price
+from datetime import datetime
+import pytz
 
 
 
@@ -35,7 +37,8 @@ def fetch_prices(symbol, start_time, end_time):
         start_time = data[-1][0] + 60000  # last candle timestamp + 1 minute
 
 
-end = int(time.time() * 1000)
-start = end - (8 * 24 * 60 * 60 * 1000)
-fetch_prices("BTCUSDT", start, end)
+# end = int(time.time() * 1000)
+# start = int(datetime(2025, 11, 1, tzinfo=ET).timestamp() * 1000)
+
+# fetch_prices("BTCUSDT", start, end)
 

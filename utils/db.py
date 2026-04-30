@@ -20,6 +20,23 @@ def init_db():
 
     cur.execute("CREATE TABLE IF NOT EXISTS prices (id INTEGER PRIMARY KEY AUTOINCREMENT, symbol TEXT, timestamp INTEGER, open REAL, close REAL, high REAL, low REAL, UNIQUE(symbol, timestamp) )")
 
+    cur.execute("""CREATE TABLE IF NOT EXISTS paper_trades (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    wallet TEXT,
+    title TEXT,
+    symbol TEXT,
+    condition_id TEXT,
+    outcome TEXT,
+    entry_price REAL,
+    exit_price REAL,
+    entry_ts INTEGER,
+    exit_ts INTEGER,
+    end_ts INTEGER,
+    pnl REAL,
+    status TEXT DEFAULT 'open',
+    inserted_at TEXT,
+    UNIQUE(wallet, condition_id, outcome)
+    )""")
     con.commit()
     
     con.close()
@@ -30,7 +47,7 @@ def insert_trader(trader):
     con = sql3.connect(DB_PATH)
     cur = con.cursor()
     
-    cur.execute("INSERT OR IGNORE INTO traders (wallet_address, rank, weekly_pnl, weekly_volume, last_updated) VALUES (?,?,?,?,?)", (trader['wallet_address'],trader['rank'],trader['weekly_pnl'],trader['weekly_volume'], datetime.now(timezone.utc).timestamp() ))
+    cur.execute("INSERT OR REPLACE INTO traders (wallet_address, rank, weekly_pnl, weekly_volume, last_updated) VALUES (?,?,?,?,?)", (trader['wallet_address'],trader['rank'],trader['weekly_pnl'],trader['weekly_volume'], datetime.now(timezone.utc).timestamp() ))
     con.commit()
     con.close()
 def insert_trade(trade):
@@ -43,6 +60,20 @@ def insert_trade(trade):
                 )
     con.commit()
     con.close()
+    
+def insert_paper_trade(trade):
+    con = sql3.connect(DB_PATH)
+    cur = con.cursor()
+    
+    cur.execute("""INSERT OR IGNORE INTO paper_trades 
+    (wallet, title, symbol, condition_id, outcome, entry_price, entry_ts, end_ts, status, inserted_at) 
+    VALUES (?,?,?,?,?,?,?,?,?,?)""",
+    (trade['wallet'], trade['title'], trade['symbol'], trade['conditionId'], trade['outcome'],
+     trade['entry_price'], trade['entry_ts'], trade['end_ts'], 'open', datetime.now(timezone.utc).timestamp()))
+    
+    con.commit()
+    con.close()
+
 
 def insert_closed_position(trade):
 
@@ -91,3 +122,4 @@ def get_wallets():
 
     return wallets
 
+init_db()
